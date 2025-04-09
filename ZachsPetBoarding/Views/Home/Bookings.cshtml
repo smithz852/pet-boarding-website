@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Bookings";
+}
+
+
+<h1 class="mb-4 mt-3" style="margin-left: 8%;">Bookings</h1>
+
+<div class="bookingForm">
+    <form class="row g-3">
+        <div class="col-md-6">
+            <label for="inputFn" class="form-label">Fist Name</label>
+            <input type="text" class="form-control" id="inputFn">
+        </div>
+        <div class="col-md-6">
+            <label for="inputLn" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="inputLn">
+        </div>
+        <div class="col-12">
+            <label for="inputPet" class="form-label">Pet(s) Name</label>
+            <select id="inputPet" class="form-select">
+                <option selected>Select Pet</option>
+                <option>Add Pet</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="checkIn" class="form-label">Check In Date</label>
+            <input type="date" id="checkIn" class="form-select" />
+        </div>
+        <div class="col-md-6">
+            <label for="checkOut" class="form-label">Check Out Date</label>
+            <input type="date" id="checkOut" class="form-select" />
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Checkout</button>
+        </div>
+    </form>
+</div>
+
+

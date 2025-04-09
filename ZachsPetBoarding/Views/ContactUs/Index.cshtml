@@ -1,0 +1,74 @@
+﻿@model ZachsPetBoarding.ViewModels.FormSubmissionVM
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<main aria-labelledby="title">
+    <h2 id="title">Contact Us</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <section id="loginForm">
+                @using (Html.BeginForm("Index", "ContactUs", FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <hr />
+                    <div class="row">
+                        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(m => m.FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.Question, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Question, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Question, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-2 col-md-10">
+                            <input type="submit" value="Submit" class="btn btn-outline-dark" />
+                        </div>
+                    </div>
+                }
+            </section>
+            <div>
+                <address>
+                    458 Pawliday Way<br />
+                    Redmond, WA 98052-6399<br />
+                    <abbr title="Phone">P:</abbr>
+                    425.555.0100
+                </address>
+                <address>
+                    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@pawlidayInn.com</a><br />
+                </address>
+            </div>
+        </div>
+    </div>
+</main>
+

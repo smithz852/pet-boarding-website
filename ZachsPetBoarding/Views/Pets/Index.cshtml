@@ -1,0 +1,155 @@
+﻿
+@model List<ZachsPetBoarding.Models.OwnersToPetsModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between">
+    <h2>My Pets</h2>
+    <h3>@Html.ActionLink("Add Pet", "AddPets", "Pets", new { area = "" }, new { @class = "btn btn-success" })</h3>
+</div>
+
+
+@*Move form into button that's only visable when clicked'*@
+@*Output cards of pets from owner onto page as default, have a placeholder "no pets added" if none have been added yet*@
+
+@foreach (var petInfo in Model)
+{
+
+    using (Html.BeginForm("UpdatePet", "Pets", FormMethod.Post))
+    {
+
+        @Html.AntiForgeryToken()
+        @Html.Hidden("PetID", petInfo.Pet.PetID)
+        @Html.Hidden("OwnerID", petInfo.Owner.Id)
+      
+
+        <div class="pet-card">
+            <div class="row g-3" id=@petInfo.Pet.PetName>
+                <div class="d-flex">
+                    <div class="flex-grow-1">
+                        <div class="row">
+                            <div class="col-md-6 quarterWide">
+                                <label class="form-label">Pet Name</label>
+                                <p>@petInfo.Pet.PetName</p>
+                            </div>
+                            <div class="col-sm-6 quarterWide">
+                                <label class="form-label">Pet Breed</label>
+                                <p>@petInfo.Pet.PetBreed</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 quarterWide">
+                                <label class="form-label">Pet Type</label>
+                                <p>@petInfo.Pet.PetType</p>
+                            </div>
+                            <div class="col-sm-6 quarterWide">
+                                <label class="form-label">Pet Age</label>
+                                <p class="petData-@petInfo.Pet.PetName">@petInfo.Pet.PetAge</p>
+                                @Html.TextBox("PetAge", petInfo.Pet.PetAge, new { @class = "form-control d-none" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 quarterWide">
+                                <label class="form-label">Feeding Schedule</label>
+                                <div class="input-group">
+                                    <p class="petData-@petInfo.Pet.PetName">@petInfo.Pet.FeedingSchedule &nbsp;</p>
+                                    @Html.TextBox("FeedingSchedule", petInfo.Pet.FeedingSchedule, new { @class = "form-control d-none" })
+                                    <span>/day</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 quarterWide">
+                                <label class="form-label">Feeding Amount In Cups</label>
+                                <div class="input-group">
+                                    <p class="petData-@petInfo.Pet.PetName">@petInfo.Pet.FeedAmountInCups &nbsp;</p>
+                                    @Html.TextBox("FeedAmountInCups", petInfo.Pet.FeedAmountInCups, new { @class = "form-control d-none" })
+                                    <span>Cups</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex">
+                            <button type="submit" onclick="editPet(event,'@petInfo.Pet.PetName')" class="btn btn-primary petData-@petInfo.Pet.PetName">Edit</button>
+                            <button type="submit" value="Submit" class="btn btn-primary d-none formBtn-@petInfo.Pet.PetName">Save</button>
+                            <button class="btn btn-danger d-none delete-@petInfo.Pet.PetName">@Html.ActionLink("Delete", "DeletePet", "Pets", new { id = petInfo.Pet.PetID }, null)</button>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="col-md-6 quarterWide">
+                            <fieldset>
+                                <legend class="form-label m-1">Medications</legend>
+                                <div class="d-flex flex-column flex-wrap add-pet-medication">
+                                    @if (petInfo.Pet.Medications == null)
+                                    {
+                                        <p></p>
+                                    }
+                                    @foreach (var meds in petInfo.Pet.Medications)
+                                    {
+
+                                        <p class="petData-@petInfo.Pet.PetName">@meds.MedicationName</p>
+
+                                    }
+                                    @foreach (var meds in petInfo.Pet.Medications)
+                                    {
+                                        if (petInfo.Pet.Medications != null)
+                                        {
+                                            @Html.Hidden("MedicationIDs", meds.MedicationID)
+                                            @Html.TextBox("Medications", meds.MedicationName, new { @class = "form-control d-none" })
+                                        }
+                                    }
+
+                                </div>
+                                <button onclick="addMedication(event, '@petInfo.Pet.PetName')" class="btn btn-success m-1 d-none">+</button>
+                            </fieldset>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<script>
+    function editPet(event, pet) {
+        event.preventDefault();
+        console.log(pet)
+        const child = document.getElementById(pet)
+        const parent = child.parentElement
+        console.log(parent)
+        const currentData = parent.querySelectorAll(".petData-" + pet)
+        const editBtn = parent.querySelector(".formBtn-" + pet)
+        const deleteBtn = parent.querySelector(".delete-" + pet)
+        const addMedsBtn = parent.querySelector(".btn-success")
+        const formInputs = parent.querySelectorAll(".form-control")
+
+        currentData.forEach(el => {
+            el.classList.add('d-none')
+        })
+        editBtn.classList.remove('d-none')
+        addMedsBtn.classList.remove('d-none')
+        deleteBtn.classList.remove('d-none')
+        formInputs.forEach(el => {
+            el.classList.remove("d-none")
+        })
+
+    }
+
+
+    function addMedication(event, pet) {
+        event.preventDefault();
+        const child = document.getElementById(pet)
+        const parent = child.parentElement
+        let container = parent.querySelector(".add-pet-medication");
+        let index = container.children.length;
+
+        let input = document.createElement("input");
+        input.classList.add("form-control")
+        input.type = "text";
+        input.name = `NewMedications`;
+
+        container.appendChild(input);
+    }
+
+</script>

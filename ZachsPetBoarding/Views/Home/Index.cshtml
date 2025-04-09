@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<main>
+    <section class="d-flex flex-column justify-content-center" aria-labelledby="aspnetTitle" style="padding: 2%;">
+        <h1 id="title" class="text-center">Pawliday Inn</h1>
+        <p class="lead text-center">Pet Boarding For Dogs and Cats</p>
+    </section>
+
+    <div class="row justify-content-evenly">
+        <div class="card p-0" style="width: 18rem;">
+            <img src="~/Content/Images/catImg.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Our Story</h5>
+                <p class="card-text">A cozy, family-owned pet boarding hotel where your furry friends are treated like part of our family!</p>
+                <a href="">@Html.ActionLink("Learn More", "About", "Home", new { area = "" }, new { @class = "btn btn-primary" })</a>
+            </div>
+        </div>
+        <div class="card p-0" style="width: 18rem;">
+            <img src="~/Content/Images/dogImg.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Book A Stay</h5>
+                <p class="card-text">Leave your pet in great hand while you enjoy your travels. Book a spot today!</p>
+                @if (Request.IsAuthenticated)
+                {
+                    <a href="">@Html.ActionLink("Reservations", "Bookings", "Home", new { area = "" }, new { @class = "btn btn-primary" })</a>
+                }
+                else
+                {
+                    <a href="">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "btn btn-primary" })</a>
+                }
+
+            </div>
+        </div>
+    </div>
+</main>

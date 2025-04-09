@@ -1,0 +1,43 @@
+﻿@charset "UTF-8";
+
+.values-container {
+    width: 450px;
+    height: 465px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2%;
+}
+
+.bookingForm {
+    background-color: #f8f9fa;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 3%;
+    margin: 8%;
+}
+
+.pet-card {
+    background-color: #f8f9fa;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 3%;
+    margin: 2%;
+}
+
+body {
+    background-color: #D1DEDE !important;
+}
+
+.quarterWide {
+    width: 45% !important;
+}
+

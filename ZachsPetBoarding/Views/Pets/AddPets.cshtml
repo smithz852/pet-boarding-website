@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNet.Identity
+@model ZachsPetBoarding.ViewModels.PetsViewModel
+@{
+    ViewBag.Title = "AddPets";
+}
+
+<h2>Add Pets</h2>
+
+@using (Html.BeginForm("AddPets", "Pets", new { email = User.Identity.GetUserName() }, FormMethod.Post, new { role = "form" }))
+{
+    <div class="bookingForm">
+        <div class="row g-3">
+            <div class="d-flex">
+                <div>
+                    <div class="row">
+                        <div class="col-md-6 quarterWide">
+                            @Html.LabelFor(m => m.PetName, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.PetName, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-6 quarterWide">
+                            @Html.LabelFor(m => m.PetBreed, new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.PetBreed, new SelectList(new List<string> { "Corgi", "Pug", "Beagle", "Bulldog" }), "Select Breed", new { @class = "form-select" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 quarterWide">
+                            @Html.LabelFor(m => m.PetType, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.PetType, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-6 quarterWide">
+                            @Html.LabelFor(m => m.PetAge, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.PetAge, new { @class = "form-control" })
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 quarterWide">
+                            @Html.LabelFor(m => m.FeedingSchedule, new { @class = "form-label" })
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.FeedingSchedule, new { @class = "form-control" })
+                                <span class="input-group-text">/day</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 quarterWide">
+                            @Html.LabelFor(m => m.FeedAmountInCups, new { @class = "form-label" })
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.FeedAmountInCups, new { @class = "form-control" })
+                                <span class="input-group-text">Cups</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" value="Submit" class="btn btn-primary">Save Pet</button>
+                    </div>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="col-md-6 quarterWide">
+                        <fieldset>
+                            <legend class="form-label m-1">Medications</legend>
+                            <div class="d-flex flex-column flex-wrap" id="add-medication">
+                               
+                                @for (int i = 0; i < (Model.Medications != null ? Model.Medications.Count : 0); i++)
+                                {
+                                    @Html.TextBox("Medications[" + i + "]", Model.Medications[i], new { @class = "form-control" })
+                                }
+
+                            </div>
+                            <button onclick="addMedication(event)" class="btn btn-success m-1">+</button>
+                        </fieldset>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    function addMedication(event) {
+        event.preventDefault();
+        let container = document.getElementById("add-medication");
+        let index = container.children.length;
+
+        let input = document.createElement("input");
+        input.classList.add("form-control")
+        input.type = "text";
+        input.name = `Medications[${index}]`;
+
+        container.appendChild(input);
+    }</script>
+
