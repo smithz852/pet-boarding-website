@@ -196,6 +196,7 @@
     <Compile Include="seeds\AdminSeed.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="ViewModels\BookingsVM.cs" />
     <Compile Include="ViewModels\CreateProfileVM.cs" />
     <Compile Include="ViewModels\PetsViewModel.cs" />
     <Compile Include="ViewModels\FormSubmissionVM.cs" />
