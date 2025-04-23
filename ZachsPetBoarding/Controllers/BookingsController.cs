@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using ZachsPetBoarding.Models;
 using Newtonsoft.Json.Linq;
+using ZachsPetBoarding.ViewModels;
 
 namespace ZachsPetBoarding.Controllers
 {
@@ -18,26 +19,27 @@ namespace ZachsPetBoarding.Controllers
             return View();
         }
 
-        // Bookings/CreateBooking?checkInDate=3/15/2025&checkOutDate=3/20/2025&totalCost=300&petID=5FE26113-C18A-4226-BD64-1C269CBF2672&kennelID=8E194BCE-9ABF-40CE-8AE0-34DA3308FB10
-        public ActionResult CreateBooking(
-            string checkInDate, 
-            string checkOutDate, 
-            decimal totalCost, 
-            Guid? petID, 
-            Guid? kennelID
-            )
+        public ActionResult CreateBooking()
+        {
+            BookingsVM bookingsVM = new BookingsVM();
 
+            return View(bookingsVM);
+        }
+
+        [HttpPost]
+        public ActionResult CreateBooking(BookingsVM bookingsVM)
         {
 
-         if (petID == null)
-            {
-                return Content("Error: Pet ID is null or invalid");
-            }
 
-         if (kennelID == null)
-            {
-                return Content("Error: Kennel ID is null or invalid");
-            }
+         //if (petID == null)
+         //   {
+         //       return Content("Error: Pet ID is null or invalid");
+         //   }
+
+         //if (kennelID == null)
+         //   {
+         //       return Content("Error: Kennel ID is null or invalid");
+         //   }
 
             ApplicationDbContext dbContext = new ApplicationDbContext();
 
@@ -45,29 +47,29 @@ namespace ZachsPetBoarding.Controllers
             KennelsModel kennelsModel = new KennelsModel();
 
 
-            petModel = dbContext.Pets.FirstOrDefault(x => x.PetID == petID);
-            kennelsModel = dbContext.Kennels.FirstOrDefault(x => x.KennelID == kennelID);
+            //petModel = dbContext.Pets.FirstOrDefault(x => x.PetID == petID);
+            //kennelsModel = dbContext.Kennels.FirstOrDefault(x => x.KennelID == kennelID);
 
-            if (kennelsModel == null)
-            {
-                return Content("Error: Kennel not found");
-            }
+            //if (kennelsModel == null)
+            //{
+            //    return Content("Error: Kennel not found");
+            //}
 
-            if (petModel == null)
-            {
-                return Content("Error: Pet not found");
-            }
+            //if (petModel == null)
+            //{
+            //    return Content("Error: Pet not found");
+            //}
             
 
-            BookingsModel bookingsModel = new BookingsModel();
-            bookingsModel.CheckInDate = DateTime.Parse(checkInDate);
-            bookingsModel.CheckOutDate = DateTime.Parse(checkOutDate);
-            bookingsModel.TotalCost = totalCost;
-            bookingsModel.BookingDateTime = DateTime.UtcNow;
-            bookingsModel.Kennel = kennelsModel;
-            bookingsModel.Pet = petModel;
+            //BookingsModel bookingsModel = new BookingsModel();
+            //bookingsModel.CheckInDate = DateTime.Parse(checkInDate);
+            //bookingsModel.CheckOutDate = DateTime.Parse(checkOutDate);
+            //bookingsModel.TotalCost = totalCost;
+            //bookingsModel.BookingDateTime = DateTime.UtcNow;
+            //bookingsModel.Kennel = kennelsModel;
+            //bookingsModel.Pet = petModel;
 
-            dbContext.Bookings.Add(bookingsModel);
+            //dbContext.Bookings.Add(bookingsModel);
 
             try
             {
