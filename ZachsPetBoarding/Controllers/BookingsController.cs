@@ -7,6 +7,7 @@ using System.Data.Entity;
 using ZachsPetBoarding.Models;
 using Newtonsoft.Json.Linq;
 using ZachsPetBoarding.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace ZachsPetBoarding.Controllers
 {
@@ -19,6 +20,29 @@ namespace ZachsPetBoarding.Controllers
             return View();
         }
 
+        public ActionResult PetsList()
+        {
+            string userEmail = User.Identity.GetUserName();
+
+            if (userEmail == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            ApplicationDbContext dbContext = new ApplicationDbContext();
+            ApplicationUser aspNetUser = new ApplicationUser();
+            aspNetUser = dbContext.Users.FirstOrDefault(x => x.Email == userEmail);
+
+
+            List<OwnersToPetsModel> ownersToPetsList = dbContext.OwnersToPets
+                .Include(x => x.Pet)
+                .Where(x => x.Owner.Id == aspNetUser.Id)
+                .ToList();
+
+
+            return PartialView("PetsList", ownersToPetsList);
+        }
+
         public ActionResult CreateBooking()
         {
             BookingsVM bookingsVM = new BookingsVM();
@@ -29,22 +53,31 @@ namespace ZachsPetBoarding.Controllers
         [HttpPost]
         public ActionResult CreateBooking(BookingsVM bookingsVM)
         {
+            string userEmail = User.Identity.GetUserName();
 
+           
 
-         //if (petID == null)
-         //   {
-         //       return Content("Error: Pet ID is null or invalid");
-         //   }
-
-         //if (kennelID == null)
-         //   {
-         //       return Content("Error: Kennel ID is null or invalid");
-         //   }
+            //if (kennelID == null)
+            //   {
+            //       return Content("Error: Kennel ID is null or invalid");
+            //   }
 
             ApplicationDbContext dbContext = new ApplicationDbContext();
+            ApplicationUser aspNetUser = new ApplicationUser();
+            aspNetUser = dbContext.Users.FirstOrDefault(x => x.Email == userEmail);
+            OwnersToPetsModel ownersToPetsModel = new OwnersToPetsModel();
+            ownersToPetsModel = dbContext.OwnersToPets
+                .Include(x => x.Pet)
+                .Where(x => x.Owner.Id == aspNetUser.Id)
+                .FirstOrDefault(x => x.Pet.PetName == bookingsVM.PetName);
 
-            PetModel petModel = new PetModel();
-            KennelsModel kennelsModel = new KennelsModel();
+            if (ownersToPetsModel == null)
+            {
+                return Content("Error: Pet ID is null or invalid");
+            }
+
+            //PetModel petModel = new PetModel();
+            //KennelsModel kennelsModel = new KennelsModel();
 
 
             //petModel = dbContext.Pets.FirstOrDefault(x => x.PetID == petID);
@@ -59,7 +92,7 @@ namespace ZachsPetBoarding.Controllers
             //{
             //    return Content("Error: Pet not found");
             //}
-            
+
 
             //BookingsModel bookingsModel = new BookingsModel();
             //bookingsModel.CheckInDate = DateTime.Parse(checkInDate);

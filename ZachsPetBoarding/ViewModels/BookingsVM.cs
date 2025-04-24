@@ -19,8 +19,6 @@ namespace ZachsPetBoarding.ViewModels
         public DateTime CheckInDate { get; set; }
         [Required(ErrorMessage = "Please choose a check-out date")]
         public DateTime CheckOutDate { get; set; }
-        public decimal TotalCost { get; set; }
-        public DateTime BookingDateTime { get; set; }
 
     }
 }

@@ -22,7 +22,7 @@
             </div>
             <div class="col-12">
                 @Html.LabelFor(m => m.PetName, new { @class = "form-label" })
-                @Html.DropDownListFor(m => m.PetName, new SelectList(new List<string> { "Pet 1", "Pet 2", "Pet 3", "Pet 4" }), "Select Pet", new { @class = "form-select" })
+                @Html.TextBoxFor(m => m.PetName, new { @class = "form-control" })
             </div>
             <div class="col-md-6">
                 @Html.LabelFor(m => m.CheckInDate, new { @class = "form-label" })
