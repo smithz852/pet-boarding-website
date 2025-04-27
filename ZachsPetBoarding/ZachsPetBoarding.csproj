@@ -286,6 +286,7 @@
     <Content Include="Views\ContactUs\FormSubmissionSuccess.cshtml" />
     <Content Include="Views\Pets\AddPets.cshtml" />
     <Content Include="Views\Pets\DeletePet.cshtml" />
+    <Content Include="Views\Bookings\BookingSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

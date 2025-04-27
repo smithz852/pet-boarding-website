@@ -20,29 +20,6 @@ namespace ZachsPetBoarding.Controllers
             return View();
         }
 
-        public ActionResult PetsList()
-        {
-            string userEmail = User.Identity.GetUserName();
-
-            if (userEmail == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            ApplicationDbContext dbContext = new ApplicationDbContext();
-            ApplicationUser aspNetUser = new ApplicationUser();
-            aspNetUser = dbContext.Users.FirstOrDefault(x => x.Email == userEmail);
-
-
-            List<OwnersToPetsModel> ownersToPetsList = dbContext.OwnersToPets
-                .Include(x => x.Pet)
-                .Where(x => x.Owner.Id == aspNetUser.Id)
-                .ToList();
-
-
-            return PartialView("PetsList", ownersToPetsList);
-        }
-
         public ActionResult CreateBooking()
         {
             BookingsVM bookingsVM = new BookingsVM();
@@ -57,52 +34,44 @@ namespace ZachsPetBoarding.Controllers
 
            
 
-            //if (kennelID == null)
-            //   {
-            //       return Content("Error: Kennel ID is null or invalid");
-            //   }
+            
 
             ApplicationDbContext dbContext = new ApplicationDbContext();
+            KennelsModel kennelsModel = new KennelsModel();
             ApplicationUser aspNetUser = new ApplicationUser();
             aspNetUser = dbContext.Users.FirstOrDefault(x => x.Email == userEmail);
             OwnersToPetsModel ownersToPetsModel = new OwnersToPetsModel();
+            BookingsModel bookingsModel = new BookingsModel();
+
             ownersToPetsModel = dbContext.OwnersToPets
                 .Include(x => x.Pet)
                 .Where(x => x.Owner.Id == aspNetUser.Id)
                 .FirstOrDefault(x => x.Pet.PetName == bookingsVM.PetName);
+
+            kennelsModel = dbContext.Kennels
+                .Where(x => x.IsReserved == false)
+                .FirstOrDefault();
 
             if (ownersToPetsModel == null)
             {
                 return Content("Error: Pet ID is null or invalid");
             }
 
-            //PetModel petModel = new PetModel();
-            //KennelsModel kennelsModel = new KennelsModel();
+            if (kennelsModel == null)
+            {
+                return Content("Error: Kennel not available");
+            }
 
 
-            //petModel = dbContext.Pets.FirstOrDefault(x => x.PetID == petID);
-            //kennelsModel = dbContext.Kennels.FirstOrDefault(x => x.KennelID == kennelID);
-
-            //if (kennelsModel == null)
-            //{
-            //    return Content("Error: Kennel not found");
-            //}
-
-            //if (petModel == null)
-            //{
-            //    return Content("Error: Pet not found");
-            //}
-
-
-            //BookingsModel bookingsModel = new BookingsModel();
-            //bookingsModel.CheckInDate = DateTime.Parse(checkInDate);
-            //bookingsModel.CheckOutDate = DateTime.Parse(checkOutDate);
+            
+            bookingsModel.CheckInDate = bookingsVM.CheckInDate;
+            bookingsModel.CheckOutDate = bookingsVM.CheckOutDate;
             //bookingsModel.TotalCost = totalCost;
-            //bookingsModel.BookingDateTime = DateTime.UtcNow;
-            //bookingsModel.Kennel = kennelsModel;
-            //bookingsModel.Pet = petModel;
+            bookingsModel.BookingDateTime = DateTime.UtcNow;
+            bookingsModel.Kennel = kennelsModel;
+            bookingsModel.Pet = ownersToPetsModel.Pet;
 
-            //dbContext.Bookings.Add(bookingsModel);
+            dbContext.Bookings.Add(bookingsModel);
 
             try
             {
@@ -113,8 +82,15 @@ namespace ZachsPetBoarding.Controllers
 
             }
 
-            return Content("Booking was successful!");
+            return RedirectToAction("BookingSuccess", "Bookings");
         }
+
+        public ActionResult BookingSuccess()
+        {
+            return View();
+        }
+
+     
 
         public ActionResult ViewBooking(Guid? id)
         {
