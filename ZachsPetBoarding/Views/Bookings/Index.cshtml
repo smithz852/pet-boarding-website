@@ -1,8 +1,42 @@
-﻿
+﻿@using Microsoft.AspNet.Identity
+@model ZachsPetBoarding.ViewModels.BookingsVM
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
-<h2>Manage User Bookings</h2>
+<h2>Book A Stay</h2>
+
+<div class="bookingForm">
+    @using (Html.BeginForm("CreateBooking", "Bookings", new { email = User.Identity.GetUserName() }, FormMethod.Post, new { role = "form" }))
+    {
+        <div class="row g-3">
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.FirstName, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.LastName, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+            </div>
+            <div class="col-12">
+                @Html.LabelFor(m => m.PetName, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.PetName, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.CheckInDate, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.CheckInDate, new { @class = "form-select", @type = "date" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.CheckOutDate, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.CheckOutDate, new { @class = "form-select", @type = "date" })
+
+            </div>
+            <div class="col-12">
+                <button type="submit" value="Submit" class="btn btn-primary">Checkout</button>
+            </div>
+        </div>
+    }
+</div>
 

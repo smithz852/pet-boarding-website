@@ -7,13 +7,13 @@ namespace ZachsPetBoarding.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class resetDb : IMigrationMetadata
+    public sealed partial class initialDb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(resetDb));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initialDb));
         
         string IMigrationMetadata.Id
         {
-            get { return "202504070425017_resetDb"; }
+            get { return "202504230249262_initialDb"; }
         }
         
         string IMigrationMetadata.Source
